@@ -1,0 +1,14 @@
+Hint: the large red areas around the hydroxyl group in 4-hydroxy-tamoxifen suggest that the molecule could benefit from hydrogen bond acceptors/negative atoms. Think of a small, electronegative atom which can accept a hydrogen bond. (Small because sterically demanding groups seem disfavorable in that area.) 
+
+CoMFA contour maps in combination with estradiol-17β-glucuronide and 
+cholic acid. Heteroatoms were rendered according to their default CPK colors.
+
+(A) Steric field distribution. 
+Regions where increasing the molecular volume increases activity are in
+green and regions where increasing the volume decreases the activity are in 
+yellow. 
+
+(B) Electrostatic field distribution. 
+Regions where increasing the positive charges increases activity
+are in blue and regions where increasing the negative charges increases 
+the activity are in red.

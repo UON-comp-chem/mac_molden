@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><HTML>
+<HEAD>
+  <LINK href="/cmbi.css" rel="stylesheet" type="text/css">
+  <TITLE>2-D searching Tutorial</TITLE>
+</HEAD>
+
+<BODY>
+<br>
+<TABLE WIDTH="100%" CELLSPACING="0" BORDER="0" ALIGN="CENTER">
+<TR><TH CLASS="bioinformatics-header">2-D searching Tutorial</TH></TR>
+</TABLE>
+<P>
+
+<P>
+<CENTER>
+<B>By G. Schaftenaar</B>
+</CENTER>
+<P>
+
+
+<h2><ul>1. Introduction to 2D-similarity searches</ul></h2><br><br>
+
+2D-searching is applied to find compounds in a database which are similar
+in molecular features to a known active molecule(s). Each compound is 
+assigned a 2D-fingerprint. A fingerprint is a set of bits, where each bit
+indicates the absence or presence of a molecular feature. To determine
+how similar two compounds are based on their fingerprints, the Tanimoto 
+coefficient is often used. Below you will find an example of two compounds
+and their fingerprints and the calculation of the Tanimoto coefficient:
+<P>
+
+ 
+<center>
+<IMG src="pic1.gif"><br><br>
+</center>
+<P>
+Below you will find two new compounds. Calculate the Tanimoto coefficient
+for this pair of molecules.
+<P>
+<center>
+<IMG src="pic2.gif"><br><br>
+</center>
+<P>
+Below you will find two known active compounds for the estrogen receptor;
+Raloxifene(<B>1</B>) and Tamoxifen(<B>2</B>).
+Calculate the Tanimoto coefficient for this pair of molecules.
+Are these two compounds very similar ?
+<P>
+<center>
+<IMG src="pic3.gif"><br><br>
+</center>
+<P>
+
+<HR NOSHADE>
+<H3><A NAME="setupenv">Setup the working environment</A></H3>
+
+<P>
+From the Unix shell (command prompt):
+<UL>
+<LI>
+Change directory by typing<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;<TT><B>cd Practicals/05_2DSearching</B></TT><BR>
+</LI>
+<LI>
+And call Molden by typing<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;<TT><B>gmolden</B></TT><BR>
+</LI>
+</UL>
+</P>
+
+<HR NOSHADE>
+<h2><ul>2. Find compounds in a database similar to a known active</ul></h2><br><br>
+
+How many compounds in the database of 500 compounds (485 randomly selected, 15 SERM
+(<B>S</B>elective <B>E</B>strogen <B>R</B>eceptor <B>M</B>odulator)
+are similar to tamoxifen, a known active for the ER<font face="symbol">a</font> 
+receptor.
+<P>
+
+Read in the database of 500 compounds:
+<P>
+
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<div class="avoid">
+<TD><IMG ALIGN="left" SRC="read.gif">
+<TD><IMG ALIGN="left" WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG ALIGN="left" SRC="sdf_sel.gif">
+<TD><IMG ALIGN="left" WIDTH="100" SRC="drawn-arrow.gif">
+</div>
+</TABLE>
+<P>
+
+Next we have to calculate fingerprints for the molecules in the database:
+
+<P>
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<div class="avoid">
+<TD><IMG ALIGN="left" SRC="500_db.gif">
+<TD><IMG ALIGN="left" WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG ALIGN="left" width=700 SRC="fs_create.gif">
+</div>
+</TABLE>
+<P>
+
+<P>
+Now close this window<BR>
+and let's do the 2D similarity search:
+<P>
+<P>
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<div class="avoid">
+<TD><IMG ALIGN="left" SRC="500_sdf_search.gif">
+<TD><IMG ALIGN="left" WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG ALIGN="left" SRC="500_search.gif">
+</div>
+</TABLE>
+<P>
+
+Open the Query file: <B>tamoxifen.mol2</B><BR>
+and set the overlap (Similarity) to <B>0.75</B>:
+
+<P>
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<div class="avoid">
+<TD><IMG ALIGN="left" SRC="tami_open.gif">
+<TD><IMG ALIGN="left" WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG ALIGN="left" SRC="500_go.gif">
+</div>
+</TABLE>
+<P>
+
+<P>
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<div class="avoid">
+<TD><IMG ALIGN="left" WIDTH="700" SRC="search_out.gif">
+<TD><IMG ALIGN="left" WIDTH="100" SRC="drawn-arrow.gif">
+</div>
+</TABLE>
+<P>
+
+Now close this search results window.<BR>
+The results of the search have been written in the <B>res.sdf</B> file.
+Now let us open this file and look at the results.
+<P>
+<P>
+<PRE>
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+</PRE>
+
+<P>
+
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<div class="avoid">
+<TD><IMG ALIGN="left" SRC="read.gif">
+<TD><IMG ALIGN="left" WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG ALIGN="left" SRC="res_open.gif">
+<TD><IMG ALIGN="left" WIDTH="100" SRC="drawn-arrow.gif">
+</div>
+</TABLE>
+<P>
+
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<div class="avoid">
+<TD><IMG ALIGN="left" SRC="res_db.gif">
+</div>
+</TABLE>
+<P>
+
+<P>
+To navigate through the database use the Up and Down arrow keys.<BR>
+To view a hit left click the compound icon field and click <B>OK</B>.
+You will 4 serms as hits.
+<P>
+
+<HR noshade>
+<h2><ul>2. Optimizing the similarity cutoff</ul></h2><br><br>
+
+Now repeat the same procedure but change the <I>Overlap</I> to
+<B>55</B>. You will now find 7 compounds matched using these similarity 
+criteria.<br>
+Have a look at these compounds too (see above). How many of these hits
+are known drugs and how many of these are likely to be false positives ?
+(answer is 7 and 0 respectively.)
+<P>
+
+If you repeat the same procedure with <I>Overlap</I> set to <B>48</B>.
+You will find almost all of the known drugs in the database (14) and twelve false positives.
+In this case the <I>optimal</i> similarity cutoff is apparently 48.
+<P>
+<BR>
+
+  

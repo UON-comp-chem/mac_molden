@@ -1,0 +1,405 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+   <LINK HREF="/cmbi.css" REL="stylesheet" TYPE="text/css">
+   <LINK REV=MADE HREF="mailto:schaft@cmbi.ru.nl">
+   <TITLE>QSAR Tutorial</TITLE>
+</HEAD>
+
+<BODY>
+<BR>
+<TABLE WIDTH="100%" CELLSPACING="0" BORDER="0" ALIGN="CENTER">
+<TR><TH CLASS="bioinformatics-header">COmparative Molecular Field Analysis (COMFA)</TH></TR>
+</TABLE>
+
+<CENTER>
+<P>
+<STRONG>By Gijs Schaftenaar</STRONG>
+</P>
+</CENTER>
+
+<H3>Overview of this tutorial</H3>
+
+<UL>
+<LI>
+<A HREF="#introduc">Introduction</A>
+</LI>
+<LI>
+<A HREF="#setupenv">Setup the working environment</A>
+</LI>
+<LI>
+<A HREF="#createms">Setup Molden COMFA Interface</A>
+</LI>
+<LI>
+<A HREF="#plsxvali">Perform a cross-validated PLS analysis</A>
+</LI>
+<LI>
+<A HREF="#componen">Determine the optimal number of components</A>
+</LI>
+</UL>
+
+<HR NOSHADE>
+
+<H3><A NAME="introduc">Introduction</A></H3>
+
+COMFA (COmparative Molecular Field Analysis) is a special case of QSAR.
+<P>
+QSAR (Quantitative Structure Activity Relationships) is linear regression 
+technique based on data from known active molecules. QSAR can be applied
+when the 3D structure of the receptor is unknown.
+To apply QSAR, all that is needed are the activities, the 2D and/or 3D
+structures and properties/descriptors of the molecules.
+Of course, activities have to be measured, but 3D structures can
+be determined either by measurement (crystal X-ray analysis) or
+by calculation from the 2D diagram and (optionally) subsequent
+optimization.
+</P>
+COMFA is a QSAR approach where the descriptors consist of the Molecular
+Fields at each point in a 3D grid around the aligned set of 3D ligand
+molecules.
+
+<P>
+The aim of QSAR/COMFA is to derive a correlation between the biological
+activity of a set of molecules and their properties/Molecular Fields. 
+Where some properties used with QSAR
+can be calculated when only the 2D structures of the molecules are available,
+other properties require a 3D structure. The Molecular Field used as descriptors
+with COMFA requires a set of 3D ligand structures, complete with hydrogens attached, aligned at their 'biologically active' conformations.
+Herein lies the problem with the COMFA method: since it is a ligand based 
+method, it is preferably used at the beginning of a drug design project when
+no crystal structures of the target are available. Hence the 'biologically
+active' conformations of the ligands can only be guessed at. However what we can
+safely assume is that these conformations lie not too far above the optimal
+conformation in energy (at most 5 Kcal/mol) and that the conformations
+of the active ligands which have similar conformations are more likely to be valid.
+</P>
+
+<P>
+How does COMFA work?
+</P>
+
+<UL>
+<LI>
+COMFA uses a partial least-squares (PLS) analysis to predict
+activity from linear combinations of properties/descriptors.
+</LI>
+</UL>
+
+<P>
+What is needed before doing COMFA?
+</P>
+
+<UL>
+<LI>
+Molecules with activities spanning about three log units of KI
+or IC50 values are required.
+</LI>
+<LI>
+The basic COMFA assumption is that similar molecules have similar
+activities, hence COMFA works best with a series of closely related molecules.
+As a consequence, the further the molecule, who's activity you are trying 
+to predict with COMFA, is from the training set molecules, the worse your 
+predicted activity will be.
+</LI>
+</UL>
+
+<P>
+In this tutorial, you will create a COMFA model and study its
+application.
+</P>
+
+<HR NOSHADE>
+<H3><A NAME="setupenv">Setup the working environment</A></H3>
+
+<P>
+From the Unix shell (command prompt):
+<UL>
+<LI>
+Change directory to Practicals/07_COMFA/ by typing<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;<TT>cd Practicals/07_COMFA/</TT><BR>
+</LI>
+<LI>
+and call gmolden by typing<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;<TT>gmolden</TT><BR>
+</LI>
+</UL>
+</P>
+
+<HR NOSHADE>
+<H3><A NAME="createms">The Molden Comfa interface</A></H3>
+
+<P>
+<B>Molden</B> provides an interface to the open-source package 
+<A HREF="http://open3dqsar.sourceforge.net/">Open3DQSAR</A>. 
+Open3DQSAR uses molecular interaction fields (MIF) to calculate descriptors
+on each point on a 3D grid surrounding a set of pre-aligned molecules, supplied
+in the form of an <B>.sdf</B> file.
+<P>
+A series of 30 compounds with moderate to high activity for the estrogen
+receptor (ER-&alpha;) (<EM>Endocrinology</EM> <STRONG>1997</STRONG>,
+<EM>138(9)</EM>, 4022-4025) have been constructed and stored in the file
+<B>est+act.sdf</B>.
+This set, along
+with the measured activity data, will be used for training in
+a COMFA model.
+</P>
+
+<P>
+First, we need to write out the activities stored in the <B>.sdf</B> file
+into a simple <B>.txt</B> file.
+<UL>
+<LI>
+In the molden control window, select <STRONG>Read</STRONG>.
+The <I>Molden File Select</I> window will pop up.
+</LI>
+<LI>
+Activate the <I>text entry field</I> below the <B>Filter:</B> string by
+clicking it. Now enter the filter <B>sdf</B> and hit the <B>Enter</B> key.
+</LI>
+<LI>
+Click the <STRONG><TT><FONT SIZE=+1>est+act.sdf</FONT></TT></STRONG>
+file. The <I>Multi-mol file</I> window will pop up.
+</LI>
+</UL>
+</P>
+
+<P>
+You should now have a <I>multi-mol file</I> with 30 molecules:<BR>
+<BR>
+<IMG SRC="multi-mol.gif"><BR>
+</P>
+
+<P>
+Take a look at the collection of molecules; 
+You can copy a molecule from the <I>multi-mol file</I> to the molecular viewing area by
+single-clicking the 2D representation.
+Rotate the molecule by using the mouse (keep left mouse button pressed down).
+The majority of the molecules are steroids; do you recognize the
+steroid skeleton?  Notice that there are also a number of non-steroidal molecules in the training set. <BR>Write down the numbers of the non-steroidal compounds. You will need them later on in the tutorial.
+</P>
+
+<P>
+Now the activity data are exported from the <I>multi-mol file</I> to a text 
+file, by clicking the <B>Save</B> button.:<P>
+<TABLE CELLSPACING="10" BORDER="0" >
+<TR>
+<TD><IMG SRC="fields.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG ALIGN="left" SRC="logact.gif">
+</TABLE>
+<P>
+The <B>est+act_logact.txt</B> text file has as first line <I>Affinity</I> and for each
+structure a line with the logarithm of the activity.<BR>
+<P>
+The activities are relative binding affinities, expressed as
+(nanomolar!) concentration values.  In COMFA/QSAR the logarithms of
+concentrations are used, <BR>similar to using pH for the acidity
+of a solution.  So the values we'll be using are
+-log(concentration*10<SUP><SMALL>-9</SMALL></SUP>).
+</P>
+<P>
+You should now have a <B>est+act.sdf</B> database with 30 molecules and a 
+corresponding file <B>est+act_logact.txt</B> with activities. <BR>
+Now let us start the molden <I>Open3DQSAR</I> interface:<BR>
+</P>
+
+
+<TABLE CELLSPACING="10" BORDER="0" >
+<TR>
+<TD><IMG SRC="MCs.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG ALIGN="left" SRC="Open3DQSAR.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG ALIGN="left" SRC="QSARinterface+2a.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG ALIGN="left" SRC="opensdf.gif">
+</TABLE>
+<P>
+
+<TABLE CELLSPACING="10" BORDER="0" >
+<TR>
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG ALIGN="top" WIDTH=640 SRC="openact.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG ALIGN="top" WIDTH=420 SRC="QSARinterface+run.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG WIDTH=500 ALIGN="top" SRC="QSARdisplay.jpg">
+</TABLE>
+<P>
+
+For clarity's sake make the surfaces transparent by typing a <B>t</B> character
+in the display screen. <P>
+You will have to adjust the default values for the van der Waals and 
+Electrostatics contour levels to <B>0.01</B> and <B>0.008</B> respectively.
+The higher these values are the more compacted the surfaces become.
+Higher contour values also mean greater correlation to the activity.
+The light blue and red surfaces show the correlation of the electrostatics
+part of the molecular field and the activity. These surfaces concentrate on 
+the two OH groups which are essential for activity.<BR>
+ Green contours indicate regions where a relatively bulkier substitution would 
+increase the activity, whereas the yellow contours indicate areas where a 
+bulkier substituent would decrease the activity.<BR>
+The regions where increasing the positive charges would increase the activity 
+are in blue and regions where increasing the negative charges increases the activity are in red.
+<P>
+Hit the <B>Show Log</B> button to view the contents of the <I>qsar.log</I>
+file. This will open the <I>qsar.log</i> window. In this window select the 
+<B>PLS</B> option to set the viewport to the PLS part of the file.
+<P>
+<IMG WIDTH=700 ALIGN="center" SRC="showlog+pls.gif">
+<P>
+In the <I>Open3DQSAR</I> log file you will find <B>SDEC</B> (<B>S</B>tandard <B>D</B>eviation of <B>E</B>rror of <B>C</B>alculation) and  <B>r<SUP>2</SUP></B>
+</P>
+<HR NOSHADE>
+
+<H3><A NAME="plsxvali">Perform a cross-validated PLS analysis</A></H3>
+
+<P>
+In a partial least-squares (PLS) analysis, two factors are important:
+the number of components used in the regression equation (which
+will be dealt with later) and the (usually squared) correlation
+coefficient.  A <EM>non</EM>-cross-validated PLS analysis gives
+a squared correlation coefficient usually indicated by
+r<SUP><SMALL>2</SMALL></SUP>.  This number, which is also used
+in (multiple) linear regression, is between zero and one and
+expresses the quality of the PLS analysis.
+It indicates the proportion of the variation in the dependent
+variable (here the activity) that is explained by the regression
+equation and its value should be as close to one as possible.
+However, r<SUP><SMALL>2</SMALL></SUP>
+expresses the quality of the data fit rather than the quality of
+prediction (which is what we are actually interested in).
+</P>
+
+<P>
+To express the predictive power of the analysis, the
+<STRONG>cross-validated r<SUP><SMALL>2</SMALL></SUP></STRONG>, usually
+indicated by <STRONG>q<SUP><SMALL>2</SMALL></SUP></STRONG>, is used.
+In cross-validation, one value is left out, a model is derived using
+the remaining data, and the model is used to predict the value
+originally left out.  This procedure is repeated for all values,
+yielding q<SUP><SMALL>2</SMALL></SUP>.  q<SUP><SMALL>2</SMALL></SUP>
+is normally (much) lower than r<SUP><SMALL>2</SMALL></SUP> and values
+greater than 0.5 already indicate significant predictive power.
+</P>
+
+<P>
+After the cross-validated PLS analysis, you will determine the optimal
+number of components.  Recall that the components are linear
+combinations of the variables (of which you have very many!),
+ordered in such a way that the first component will describe most
+of the variation in the activity, the second most of the remaining
+variation, etc.  The cross-validated PLS analysis will be carried out
+for different numbers of components.
+As a rule of thumb, the number of components should not exceed one-third
+of the number of molecules.  More components would lead to a model
+that is <EM>overtrained</EM> - it has a better fit to the training
+data but the predictive power is diminished.
+</P>
+To perform a cross-validated PLS, we switch the <I>Cross Validation</I> button to <B>On</B>.
+<P>
+<IMG ALIGN="center" SRC="QSARinterface+cross.gif">
+<P>
+Hit the <B>Show Log</B> button to view the contents of the <I>qsar.log</I>
+file. This will open the <I>qsar.log</i> window. In this window select the 
+<B>CV</B> option to set the viewport to the cross validation part of the file.
+
+<P>
+<P>
+<IMG WIDTH=700 ALIGN="center" SRC="showlog+cv.gif">
+<P>
+</LI>
+
+<LI>
+In the <I>OPEN3DQSAR</I> log file you will find the Standard Error of Prediction (<B>SEP</B>) and <B>q<SUP>2</SUP></B>.
+</LI>
+<HR NOSHADE>
+
+<H3><A NAME="componen">Determine the optimal number of components</A></H3>
+
+<P>
+The two important factors here are the <STRONG>standard error of
+prediction</STRONG> (SEP) and the <STRONG>cross-validated
+r<SUP><SMALL>2</SMALL></SUP></STRONG> (usually called
+q<SUP><SMALL>2</SMALL></SUP>).
+SEP should be as low as possible and q<SUP><SMALL>2</SMALL></SUP>
+should be larger than 0.5 (lower values indicate poor predictive power).
+</P>
+
+<P>
+<UL>
+<LI>
+Find the number of components having the lowest SEP and note the
+corresponding q<SUP><SMALL>2</SMALL></SUP>.
+</LI>
+<LI>
+To accomplish this, in the <I>QSAR nterface window</I>, specify the number of components under <B>Principal Components:</B>. <BR>
+</LI>
+<LI>
+Check whether an additional component increases
+q<SUP><SMALL>2</SMALL></SUP> with more than 5%.
+</LI>
+<LI>
+If so, the larger number should be used; otherwise, take
+the lower (original) number of components.
+</LI>
+<!--
+The number of components having the lowest SEP = 7
+Going from 7 to 8 components, q<SUP><SMALL>2</SMALL></SUP> increases
+by less than 1%.  Therefore: 7 components.
+  -->
+</UL>
+</P>
+
+<P>
+The resulting
+number of components will be used in the non-cross-validated analysis.
+</P>
+
+<P>
+You will find that you can not get the <B>q<SUP>2</SUP></B> above 0.5 with
+this combination of dataset and descriptors. In fact the <B>q<SUP>2</SUP></B>'s are negative !<BR>
+We will try to get the <B>q<SUP>2</SUP></B> above 0.5 by switching to a more
+focussed dataset: we will remove the non-steroidal compounds from the dataset.
+<BR>Remember you wrote down the names of the non-steroidal compounds ? 
+Now remove all non-steroidal compounds from the dataset:
+<P>
+<UL>
+<LI>
+Go through the list of entries in the <B>est+act.sdf</B> file by hiting the 
+<I>arrow down key</I> and hit the <I>Delete key</I> on any non-steroidal
+compound. When done deleting, click with the left mouse button, 
+the <I>File:</I> text entry field and type <B>smalldb</B>.
+Next hit the <B>Save</B> button and select the <I>sdf</I> option.<BR>
+Next, click the <B>Save</B> button again, but select the <I>Fields</I> option. 
+The <B>smalldb_logact.txt</B> file will have been written.
+</LI>
+</UL>
+</P>
+</P>
+Now repeat the steps of COMFA model creation and cross-validation for the steroidal dataset and determine the optimal number of components.
+You will have to adjust the default values for the van der Waals and 
+Electrostatics contour levels to <B>0.008</B> and <B>0.008</B> respectively.
+<P>
+<TABLE CELLSPACING="10" BORDER="0" >
+<TR>
+<TD><IMG ALIGN="top" WIDTH=420 SRC="smalldb_interface.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG WIDTH=500  SRC="smalldb_display.jpg">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG WIDTH=700 SRC="smalldb_log.gif">
+</TABLE>
+<P>
+
+<HR NOSHADE>
+
+<H3><A NAME="optdes">Determine the optimal descriptors and components</A></H3>
+<P>
+By varying the number of components it is possible
+to get <B>q<sup>2</sup></B> as high as 0.717. <BR>
+</P>
+<P>
+
+<!-- Last updated:  8-Jun-2009 G. Schaftenaar -->
+</BODY>
+</HTML>

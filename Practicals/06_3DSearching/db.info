@@ -1,0 +1,15 @@
+time ~/pharmer.static dbcreate -dbdir 4000.db -in 4000.sdf
+Creating spatial index...
+3664	conformations
+18	molecules
+11318	internal pages
+Index creation time: 91.57s (16.59s)
+336.236u 4.540s 7:21.79 77.1%	0+0k 2861704+27992704io 91pf+0w
+
+time ~/pharmer.static dbcreate -dbdir serm.db -in serm.sdf
+Creating spatial index...
+2414	conformations
+15	molecules
+1716	internal pages
+Index creation time: 0.49s (0.4s)
+6.220u 0.172s 0:06.89 92.7%	0+0k 15736+354504io 0pf+0w

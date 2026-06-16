@@ -1,0 +1,20 @@
+void CopyConf(double *euc, float emin, int ang)
+{
+   int i,j;
+   char str[MAXSTRLEN];
+   TRISTRU *Tri[1];
+
+   allConf(&Tri1.coo,ndocka);
+   Tri1.eint = emin;
+   Tri[0] = &Tri1;
+
+   for (i=0; i < ndocka; i++) {
+	   for (j=0; j < 3; j++) {
+		Tri1.coo[i*3+j] = euc[i*3+j];
+	   }
+   }
+
+   sprintf(str,"euc_%d.mol2",ang);
+   Write_Results(str,&Tri,1,&DCKxyz,1,0);
+}
+

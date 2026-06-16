@@ -1,0 +1,8 @@
+import type=sdf file=./est+act.sdf
+box step=2.0
+load file=bind.dat
+cutoff type=max level=30.000000
+cutoff type=min level=-30.000000
+import type=dependent file=./est+act_logact.txt
+pls pc=5
+export type=coefficients pc=5 file= format=maestro interpolate=3

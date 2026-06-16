@@ -1,0 +1,403 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<style>
+    table.print-friendly tr td, table.print-friendly tr th {
+        page-break-inside: avoid;
+    }
+</style>
+
+<style type="text/css">
+  .avoid {
+    page-break-inside: avoid !important;
+    margin: 4px 0 4px 0;  
+  }
+
+@media print {
+  .container-content-inner {
+    display: block !important;
+  }
+}
+
+</style>
+
+<title>3-D searching by Pharmacophore Tutorial</title>
+
+</head><body>
+<br>
+<table align="center" border="0" cellspacing="0" width="100%">
+<tbody><tr><th class="bioinformatics-header">3-D searching by Pharmacophore</th></tr>
+</tbody></table>
+<p>
+
+</p><p>
+</p><center>
+<b>By G. Schaftenaar</b>
+</center>
+<p>
+
+</p><h2><ul>1. Introduction to 3D-pharmacophore searching.</ul></h2><br><br>
+
+The definition of a pharmacophore is the minimum functionality a molecule
+has to contain in order to exhibit activity. For a series of derivatives,
+the molecules usually have much in common and to derive the true minimum
+pharmacophore, structurally diverse active molecules are required.<br>
+For the ERalpha receptor we will design the following pharmacophore model:
+<p>
+<img src="pharm.jpg" alt="Unity 3D Search window" width=800 height=600><br><br>
+</p><p>
+The Raloxifene molecule, with the pharmacophore model overlayed:
+</p><p>
+</p><ul>
+<li> 1. Two hydroxyl groups.
+</li><li> 2. A tertiary nitrogen.
+</li><li> 3. A phenyl ring attached to one of the hydroxyl groups.
+</li></ul>
+<p>
+
+</p><hr noshade="noshade">
+<h3><a name="setupenv">Setup the working environment</a></h3>
+
+<ul>
+<li>
+Change directory by typing<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<tt><b>cd ~/Practicals/06_3DSearching</b></tt><br>
+</li>
+<li>
+And call Molden by typing<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<tt><b>gmolden</b></tt><br>
+</li>
+</ul>
+<p></p>
+
+<hr noshade="noshade">
+<h2><ul>2. Defining the pharmacophore.</ul></h2><br><br>
+
+We will define a pharmacophore for an active ligand of the ERalpha receptor.<p>
+We will start with the reading in the known active compound Raloxifene
+and open the Pharmacophore Query Editor:
+
+<P>
+
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<div class="avoid">
+<TD><IMG ALIGN="left" SRC="read.gif">
+<TD><IMG ALIGN="left" WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG ALIGN="left" SRC="ral_read.gif">
+<TD><IMG ALIGN="left" WIDTH="100" SRC="drawn-arrow.gif">
+</div>
+</TABLE>
+<P>
+
+<PRE>
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+</PRE>
+
+<P>
+
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<TD><IMG ALIGN="left" SRC="pharm_but.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG ALIGN="left" SRC="pharm_editor.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+</TABLE>
+<P>
+
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<TD><IMG WIDTH=600 SRC="empty_ral.jpg">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG WIDTH=300 SRC="empty_query_editor.gif">
+</TABLE>
+<P>
+
+The pharmacophore query editor will pop up and colored annotation points 
+appear around the ligand to denote pharmacophoric regions of interest.<p>
+<b>&gt;&gt;</b>Select the annotated points corresponding to one of the hydroxyl oxygens<p>
+<b>&gt;&gt;</b> Click <i>Create</i> in the pharmacophore query editor <b>&gt;&gt;</b> set the Radius to 1.5 &gt;&gt; and hit the <I>Return</I> key<br>
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<TD><IMG WIDTH=600 SRC="displ_oh_1.5.jpg">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG WIDTH=300 SRC="create_1.5.gif">
+</TABLE>
+<P>
+
+<b>&gt;&gt;</b> Repeat this for the second hydroxyl oxygen<br>
+<b>&gt;&gt;</b> Finally add a <i>Don</i> donor feature on the tertiary nitrogen, also give it a radius of R=1.5. <br>
+</p><p>
+
+
+To add the last feature, the aromatic feature of the benzothiophene (the phenyl ring connected to one of the hydroxyls and the five-membered ring)
+has to be defined<p>
+<b>&gt;&gt;</b> Click on the annotation point in the centre of this ring.<br>
+ <b>&gt;&gt;</b> Click <i>Create</i> and adjust the radius to 1.5<br>
+</p><p>
+
+Now we have to save the pharmacophore:
+</p><p>
+
+<b>In the pharmacophore query editor &gt;&gt; Save &gt;&gt; raloxifen.json &gt;&gt; OK</b> <br><br>
+</p><p>
+You can also restore previous pharmacophoe definitions by clicking the 
+"Open" button. Selections are stored in the 
+<A HREF="https://nl.wikipedia.org/wiki/JSON"><B>json</B> format</A>.
+<br>
+
+</p><hr noshade="noshade">
+<h2><ul>3. Using the pharmacophore to do a 3D-search of a database.</ul></h2><br><br>
+
+<p>
+In Molden database files are presumed to come in the form of a .sdf file or 
+.mol2 file. Pharmer expects the database in a .sdf file format.
+When clicking "Search", the Pharmacophore Search Database window will open.
+We will search a database of 4000 compounds/conformations (15 drug) with
+the pharmacophore we have just defined.<br>
+</p><p>
+
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<TD><IMG WIDTH=300 SRC="search.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG WIDTH=300 SRC="searchdb_open.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+</TABLE>
+<P>
+
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<TD><IMG WIDTH=400 SRC="dbcreate_opened.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG WIDTH=400 SRC="dbcreatego.gif">
+</TABLE>
+<P>
+
+Now let's do the search:
+</p><p>
+
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<TD><IMG WIDTH=300 SRC="dbcreategosearch.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG WIDTH=600 SRC="searchres.gif">
+</TABLE>
+<P>
+
+In the pharmacophore search window you will find the number of compounds in the database
+that fit this pharmacophore: 10 which is ~2% of 500.<br>
+
+</p><hr noshade="noshade">
+<h2><ul>4. Results of 3D-pharmacophore search.</ul></h2><br><br>
+
+Now let's have a look a these compounds:
+<p>
+Keep the <B>Pharmacophore Editor</B> windows open. This allows the hits
+in the results database to be viewed together with the pharmacophore features.
+
+</p><p>
+
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<TD><IMG SRC="read.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG SRC="phrm_select.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+</TABLE>
+<P>
+
+</p><p>
+The <B>multi-mol</B> database viewer window will pop up.
+</p><p>
+<img src="pharm_res.gif" alt="Database viewer window"><br><br>
+</p><p>
+Note that 7 out of the 10 compounds are drugs (serms =
+<b>S</b>elective <b>E</b>strogen <b>R</b>eceptor <b>M</b>odulators
+). However there are 3 false positives and 8 false negatives.
+</p><p>
+
+Inspect the hits for the presence of the pharmacophore features we defined.<br>
+For each hit:
+</p><p>
+
+<b>Click with the left mousebutton in the column with the 2D image in the database viewer</b><BR>
+You can use the <B>Up</B> and <B>Down</B> arrow keys to navigate in the database viewer</b><BR>
+</p><p>
+
+Notice that raloxifene (SERM05), the active compound we used to construct our 
+pharmacophore from, is amongst the found hits.
+</p><p>
+</p><hr noshade="noshade">
+<h2><ul>5. Redefining the pharmacophore.</ul></h2><br><br>
+
+In fact there are two pharmacophore models required to describe all
+known active ligands of the ERalpha receptor. The second is less stringent
+than the one we have used upto now. Let's create the new pharmacophore:
+<p>
+
+Close all open windows except the main <B>Molden</B> window:
+</p><p>
+
+Now let's read the original pharmacophore back in:
+
+</p><p>
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<TD><IMG SRC="read.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG SRC="ral_read.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+</TABLE>
+
+
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<TD><IMG ALIGN="left" SRC="pharm_but.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG ALIGN="left" SRC="pharm_editor.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+</TABLE>
+
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<TD><IMG WIDTH=300 SRC="empty_query_editor_open.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG SRC="open_raloxifen.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+</TABLE>
+<P>
+
+<TABLE CELLSPACING="10" BORDER="0" >
+<TR>
+<TD><IMG WIDTH=500 src="pharm.jpg">
+</TABLE>
+<P>
+
+</p><p>
+
+Now we are going to modify our pharmacophore by removing one feature:<br><br>
+
+
+Select in the Pharmacophore Query Editor the hydroxyl oxygen 
+furthest away from the benzothiophene. <br>
+<i>If you select the features you will see the selected feature highlighted in the main Molden window (by displaying dots around the feature)</i><br>
+<b>&gt;&gt;Press Delete if you have selected the correct feature</b>
+</p><p>
+
+Now let us save this pharmacophore under a different name, say <B>ralox2.json</B>:
+<P>
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<TD><IMG WIDTH=300 SRC="delete_feature.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG WIDTH=300 SRC="ralox2_json.gif">
+</TABLE>
+<P>
+
+Now let's redo the pharmacophore search described above with this new 
+pharmacophore model and let us use a different name for the results database. 
+Let us say <B>phrm2.sdf</B>.
+If you have done this correctly, you will find 16 compounds.
+So this pharmacophore is less stringent than the first one we used (we removed a 
+feature).
+</p><p>
+
+Inspect the hits for the presence of the pharmacophore features we just defined.<br>
+
+As you can see there were 13 known drugs (serms) found, but also 2 false positives (one compound has hits in two different conformations).<BR>
+Let's check whether these are really false positives. 
+Let's overlay one of the potential false positive with the known 
+active compound we constructed our pharmacophore models from: raloxifene.
+Let us overlay our hits with the estrogen receptor alfa structure
+co-crystallised with raloxifene: <B>1err</B>.
+For most other molecules you will find that the they don't overlay very well. 
+This is a first indication that we are dealing with a false positive.
+</p><p>
+
+A second and better check is to establishing if there are 
+clashes between the ligand and residues of the active site of the receptor.<BR>
+Now you can check the hits again using the database browser.<br><br>
+</p><p>
+
+</p><p>
+
+<P>
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<TD><IMG WIDTH=300 SRC="get_1err.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG WIDTH=300 SRC="backb.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+</TABLE>
+<P>
+
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<TD><IMG WIDTH=300 SRC="solidstick.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG WIDTH=300 SRC="ral_lig.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+</TABLE>
+<P>
+To bring up the pop up menu on the ligand, hover the mouse pointer over the 
+ligand untill you see a label displayed (RAL). Then click with the middle mouse
+button to bring up the pop up menu.
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<TD><IMG WIDTH=300 SRC="red.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG WIDTH=500 SRC="center.jpg">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+</TABLE>
+<P>
+
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<TD><IMG WIDTH=500 SRC="contact+surf.jpg">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG WIDTH=300 SRC="molden_calculate.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+</TABLE>
+<P>
+
+<P>
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<TD><IMG WIDTH=300 SRC="create_surface.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG WIDTH=300 SRC="read.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+</TABLE>
+<P>
+
+<P>
+<TABLE CLASS="print-friendly" CELLSPACING="10" BORDER="0" >
+<TR>
+<TD><IMG WIDTH=300 SRC="read+add+sdf.gif">
+<TD><IMG WIDTH="100" SRC="drawn-arrow.gif">
+<TD><IMG WIDTH=700 SRC="1err+surf+serm01.jpg">
+</TABLE>
+<P>
+
+
+
+
+The lesson we should have learned here is that a pharmacophore search is not
+enough to identify known and new active ligand. We should always try to confirm
+our hits by docking them into the active site (That is, if the 3D structure
+of the receptor is known).
+</p><p>
+The devloper of <B>pharmer</B>: David Koes also has the <B>pharmit</B> website available.
+Have a look at the following URL:<P>
+<a href="http://pharmit.csb.pitt.edu/search.html">http://pharmit.csb.pitt.edu/search.html</a>.
+
+
+</p></body></html>

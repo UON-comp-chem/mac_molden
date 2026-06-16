@@ -1,0 +1,7 @@
+COEFFICIENTS: 
+
+the PLS pseudo-coefficients of the model built out of pc principal components 
+are plotted. Since the pseudo-coefficients are linked to a specific dependent 
+variable, if multiple dependent variables are present, specific y's may be 
+indicated through the y_var_list parameter; by default a grid plot will be 
+generated for each dependent variable

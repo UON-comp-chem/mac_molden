@@ -67,3 +67,12 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+
+# bin
+bin/*
+
+# random stuff
+molden6.9_MacOSX_full.tar.gz
+ref.*
+test.*
+raloxifen.mol2

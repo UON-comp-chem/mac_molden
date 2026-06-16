@@ -1,0 +1,3 @@
+int Write_Results(File_Name,Tri,ntri,xyz,Eopt,maxi)
+char *File_Name;
+TRISTRU *Tri[MAXTRI];

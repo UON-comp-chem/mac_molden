@@ -1,0 +1,8 @@
+import type=sdf file=/Users/techreviews/molden/Practicals/07_COMFA/smalldb.sdf
+box step=2.0
+load file=/Users/techreviews/molden/tmp/bind.dat
+cutoff type=max level=30.000000
+cutoff type=min level=-30.000000
+import type=dependent file=./activity.txt
+pls pc=5
+export type=coefficients pc=5 file=/Users/techreviews/molden/tmp/ format=maestro interpolate=3
